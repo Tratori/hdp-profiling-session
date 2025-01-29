@@ -165,8 +165,8 @@ void BM_dictionary_scan(benchmark::State& state) {
 // Unit(benchmark::kMicrosecond)->Arg(0)->Arg(10)->Arg(33)->Arg(50)->Arg(66)->Arg(100)->ReportAggregatesOnly()
 #define BM_ARGS Unit(benchmark::kMicrosecond)->Arg(50)
 
-BENCHMARK(BM_dictionary_scan<naive_scan>)->BM_ARGS;
-BENCHMARK(BM_dictionary_scan<autovec_scan>)->BM_ARGS;
+// BENCHMARK(BM_dictionary_scan<naive_scan>)->BM_ARGS;
+// BENCHMARK(BM_dictionary_scan<autovec_scan>)->BM_ARGS;
 
 #if AVX512_AVAILABLE
 // BENCHMARK(BM_dictionary_scan<x86_avx512_512_scan<X86512ScanStrategy::COMPRESSSTORE>>)->BM_ARGS;
