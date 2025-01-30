@@ -6,6 +6,7 @@
 #include <array>
 #include <bit>
 #include <cstring>
+#include <iostream>
 #include <numeric>
 #include <random>
 #include <stdexcept>
@@ -23,8 +24,16 @@ using MatchingRows = AlignedData<RowId, 64>;
 // However, on cascadelake, L3 bandwidth was bottlenecking, so we went down to ~125kB, targetting L2.
 static constexpr size_t NUM_BASE_ROWS = 16;
 static constexpr size_t SCALE_FACTOR = 1024ull * 2;
-static constexpr size_t NUM_ROWS = NUM_BASE_ROWS * SCALE_FACTOR;
+static size_t NUM_ROWS = NUM_BASE_ROWS * SCALE_FACTOR;
 static constexpr size_t NUM_UNIQUE_VALUES = 16;
+
+void ParseArgs(int argc, char** argv) {
+  for (int i = 1; i < argc; ++i) {
+    if (std::strcmp(argv[i], "--large_table") == 0) {
+      NUM_ROWS *= 512;  // Increase the table size by a factor of 8
+    }
+  }
+}
 
 struct naive_scan {
   RowId operator()(const DictColumn& column, DictEntry filter_val, MatchingRows* matching_rows) {
@@ -108,7 +117,7 @@ void BM_dictionary_scan(benchmark::State& state) {
   DictColumn column{NUM_ROWS};
   MatchingRows matching_rows{NUM_ROWS};
 
-  static_assert(NUM_ROWS % NUM_UNIQUE_VALUES == 0, "Number of rows must be a multiple of num unique values.");
+  assert(NUM_ROWS % NUM_UNIQUE_VALUES == 0);  // "Number of rows must be a multiple of num unique values.");
   const int64_t input_percentage = state.range(0);
   const auto percentage_to_pass_filter = static_cast<double>(input_percentage) / 100;
 
@@ -173,4 +182,17 @@ void BM_dictionary_scan(benchmark::State& state) {
 BENCHMARK(BM_dictionary_scan<x86_avx512_512_scan<X86512ScanStrategy::COMPRESS_PLUS_STORE>>)->BM_ARGS;
 #endif
 
-BENCHMARK_MAIN();
+int main(int argc, char** argv) {
+  ParseArgs(argc, argv);
+  char arg0_default[] = "benchmark";
+  char* args_default = arg0_default;
+  if (!argv) {
+    argc = 1;
+    argv = &args_default;
+  }
+  std::cout << "Running on " << NUM_ROWS << " rows." << std::endl;
+  ::benchmark::Initialize(&argc, argv);
+  ::benchmark::RunSpecifiedBenchmarks();
+  ::benchmark::Shutdown();
+  return 0;
+}
