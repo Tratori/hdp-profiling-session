@@ -86,7 +86,7 @@ struct x86_avx512_512_scan {
     const __m512i row_id_offsets = _mm512_set_epi32(15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
 
     RowId num_matching_rows = 0;
-    static_assert(NUM_ROWS % NUM_MATCHES_PER_VECTOR == 0);
+    assert(NUM_ROWS % NUM_MATCHES_PER_VECTOR == 0);
     for (RowId chunk_start_row = 0; chunk_start_row < NUM_ROWS; chunk_start_row += NUM_MATCHES_PER_VECTOR) {
       // x86: Doing this instead of {start_row + 0, start_row + 1, ...} has a 3x performance improvement! Also applies
       // to the gcc-vec versions.
