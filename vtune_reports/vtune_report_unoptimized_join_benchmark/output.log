@@ -1,0 +1,106 @@
+vtune: Peak bandwidth measurement started.
+vtune: Peak bandwidth measurement finished.
+vtune: Collection started. To stop the collection, either press CTRL-C or enter from another console window: vtune -r /home/fmahling/hdp-profiling-session/cmake-build-info-release/r000ps -command stop.
+2025-01-31T14:46:12+00:00
+Running ./join_benchmark
+Run on (48 X 4000 MHz CPU s)
+CPU Caches:
+  L1 Data 32 KiB (x24)
+  L1 Instruction 32 KiB (x24)
+  L2 Unified 1024 KiB (x24)
+  L3 Unified 36608 KiB (x1)
+Load Average: 4.99, 2.07, 0.93
+--------------------------------------------------------------------------------
+Benchmark                      Time             CPU   Iterations UserCounters...
+--------------------------------------------------------------------------------
+BM_Join/iterations:10  567609918 ns    567587546 ns           10 PerTuple=515.989ns
+vtune: Collection stopped.
+vtune: Using result path `/home/fmahling/hdp-profiling-session/cmake-build-info-release/r000ps'
+vtune: Executing actions 75 % Generating a report                              Elapsed Time: 5.857s
+    IPC: 1.132
+    DP GFLOPS: 0.000
+    x87 GFLOPS: 0.005
+    Average CPU Frequency: 2.893 GHz
+Logical Core Utilization: 2.1% (0.994 out of 48)
+    Physical Core Utilization: 4.1% (0.993 out of 24)
+Microarchitecture Usage: 27.1% of Pipeline Slots
+    Retiring: 27.1% of Pipeline Slots
+    Front-End Bound: 10.8% of Pipeline Slots
+    Bad Speculation: 5.6% of Pipeline Slots
+    Back-End Bound: 56.5% of Pipeline Slots
+        Memory Bound: 45.3% of Pipeline Slots
+            L1 Bound: 6.9% of Clockticks
+                DTLB Overhead: 100.0% of Clockticks
+                    Load STLB Hit: 100.0% of Clockticks
+                    Load STLB Miss: 7.8% of Clockticks
+                Loads Blocked by Store Forwarding: 1.4% of Clockticks
+                Lock Latency: 0.0% of Clockticks
+                Split Loads: 0.0% of Clockticks
+                4K Aliasing: 0.6% of Clockticks
+                FB Full: 3.2% of Clockticks
+            L2 Bound: 2.2% of Clockticks
+            L3 Bound: 9.8% of Clockticks
+                L3 Latency: 14.6% of Clockticks
+                SQ Full: 0.0% of Clockticks
+            DRAM Bound: 35.1% of Clockticks
+                Memory Bandwidth: 15.6% of Clockticks
+                Memory Latency: 58.1% of Clockticks
+                    Local Memory: 63.6% of Clockticks
+                    Remote Memory: 0.0% of Clockticks
+                    Remote Cache: 0.0% of Clockticks
+            Store Bound: 0.4% of Clockticks
+                Store Latency: 4.5% of Clockticks
+                Split Stores: 0.0%
+                DTLB Store Overhead: 1.6% of Clockticks
+                    Store STLB Hit: 0.5% of Clockticks
+                    Store STLB Miss: 1.1% of Clockticks
+        Core Bound: 11.2% of Pipeline Slots
+Memory Bound: 45.3% of Pipeline Slots
+    Cache Bound: 19.0% of Clockticks
+    DRAM Bound: 35.1% of Clockticks
+    NUMA: % of Remote Accesses: 0.0%
+Vectorization: 0.0% of Packed FP Operations
+    Instruction Mix
+        SP FLOPs: 0.0% of uOps
+            Packed: 0.0% from SP FP
+                128-bit: 0.0% from SP FP
+                256-bit: 0.0% from SP FP
+                512-bit: 0.0% from SP FP
+            Scalar: 0.0% from SP FP
+        DP FLOPs: 0.0% of uOps
+            Packed: 0.0% from DP FP
+                128-bit: 0.0% from DP FP
+                256-bit: 0.0% from DP FP
+                512-bit: 0.0% from DP FP
+            Scalar: 100.0% from DP FP
+        x87 FLOPs: 0.2% of uOps
+        Non-FP: 99.8% of uOps
+    FP Arith/Mem Rd Instr. Ratio: 0.007
+    FP Arith/Mem Wr Instr. Ratio: 0.012
+Collection and Platform Info
+    Application Command Line: ./join_benchmark 
+    Operating System: 6.8.0-41-generic DISTRIB_ID=Ubuntu DISTRIB_RELEASE=24.04 DISTRIB_CODENAME=noble DISTRIB_DESCRIPTION="Ubuntu 24.04.1 LTS"
+    Computer Name: des-node03
+    Result Size: 3,8 MB 
+    Collection start time: 14:46:12 31/01/2025 UTC
+    Collection stop time: 14:46:18 31/01/2025 UTC
+    Collector Type: Driverless Perf per-process counting
+    CPU
+        Name: Intel(R) Xeon(R) Processor code named Cascadelake
+        Frequency: 2.195 GHz
+        Logical CPU Count: 48
+        LLC size: 37,5 MB 
+        Cache Allocation Technology
+            Level 2 capability: not detected
+            Level 3 capability: available
+
+Recommendations:
+    Hotspots: Start with Hotspots analysis to understand the efficiency of your algorithm.
+    Memory Access: The Memory Bound metric is high  (45.3%). A significant fraction of execution pipeline slots could be stalled due to demand memory load and stores.
+    Threading: There is poor utilization of logical CPU cores (2.1%) in your application.
+
+If you want to skip descriptions of detected performance issues in the report,
+enter: vtune -report summary -report-knob show-issues=false -r <my_result_dir>.
+Alternatively, you may view the report in the csv format: vtune -report
+<report_name> -format=csv.
+vtune: Executing actions 100 % done 
